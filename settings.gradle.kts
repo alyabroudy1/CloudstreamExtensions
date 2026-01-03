@@ -2,6 +2,7 @@ rootProject.name = "CloudstreamExtensions"
 
 File(rootDir, ".").eachDir { dir ->
     if (File(dir, "build.gradle.kts").exists()) {
+        println("Including project: ${dir.name}")
         include(dir.name)
     }
 }

@@ -40,6 +40,10 @@ To use these extensions in the Cloudstream app:
     *   *Note*: The current workflow uploads artifacts. To host a repository properly, you usually need a workflow that commits the generated `plugins.json` and `.cs3` files to a specific branch (like `builds`), or use a release system.
     *   See [Cloudstream Documentation](https://recloudstream.github.io/csdocs/) for advanced deployment details.
 
+## Migrated from Arabico
+- **MyCimaProvider**: Customized (package `com.custom.mycima`)
+- **FaselHDProvider**: Customized (package `com.custom.faselhd`)
+
 ## Testing Locally
 
 You can deploy directly to your device if ADB is connected:
