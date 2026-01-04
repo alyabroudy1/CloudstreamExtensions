@@ -1,6 +1,6 @@
 [
     {
-        "iconUrl": "https://www.google.com/s2/favicons?domain=faselhds.biz&sz=%size%",
+        "iconUrl": "https://www.google.com/s2/favicons?domain=faselhd.cloud&sz=%size%",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/alyabroudy1/cs3",
         "fileSize": 17776,
@@ -15,7 +15,7 @@
             "Anime",
             "AsianDrama"
         ],
-        "version": 7,
+        "version": 8,
         "internalName": "FaselHDProvider",
         "description": "Watch Arabic movies and series from FaselHD",
         "url": "https://raw.githubusercontent.com/alyabroudy1/cs3/builds/FaselHDProvider.cs3",
