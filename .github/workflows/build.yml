@@ -1,13 +1,18 @@
 name: Build Extensions
 
-on:
-  push:
-    branches: [ master, main ]
-  workflow_dispatch:
-
+# https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#concurrency
 concurrency:
   group: "build"
   cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths-ignore:
+      - '*.md'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,51 +21,47 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
-          fetch-depth: 0
+          path: "src"
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - name: Checkout builds
+        uses: actions/checkout@v5
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          ref: "builds"
+          path: "builds"
+
+      - name: Clean old builds
+        run: |
+          rm $GITHUB_WORKSPACE/builds/*.cs3 || true
+          rm $GITHUB_WORKSPACE/builds/*.jar || true
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: 17
+          distribution: adopt
           cache: gradle
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3.2.2
+
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: chmod +x $GITHUB_WORKSPACE/src/gradlew
 
       - name: Build extensions
         run: |
+          cd $GITHUB_WORKSPACE/src
           ./gradlew make makePluginsJson
-          
-      - name: Prepare files for commit
+
+      - name: Copy builds
         run: |
-          # Copy plugins.json to root (like Arabico)
-          cp build/plugins.json . 2>/dev/null || true
-          # Create a separate folder for built extensions
-          mkdir -p repo_build
-          find . -path ./build -prune -o -path ./repo_build -prune -o -name "*.cs3" -print -exec cp {} repo_build/ \;
-          cp build/plugins.json repo_build/ 2>/dev/null || true
+          cp $GITHUB_WORKSPACE/src/*/build/*.cs3 $GITHUB_WORKSPACE/builds/ || true
+          cp $GITHUB_WORKSPACE/src/*/build/*.jar $GITHUB_WORKSPACE/builds/ || true
+          cp $GITHUB_WORKSPACE/src/build/plugins.json $GITHUB_WORKSPACE/builds/ || true
           
-      - name: Commit and push
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          # Force add plugins.json to root
-          git add -f plugins.json 2>/dev/null || true
-          git commit -m "Build: $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit on main"
-          git push origin main || true
-          
-      - name: Push to builds branch
-        run: |
-          git checkout --orphan builds
-          git reset
-          # Copy files from build folder
-          cp build/*.cs3 . 2>/dev/null || find . -name "*.cs3" ! -path "./build/*" -exec cp {} . \;
-          cp build/plugins.json . 2>/dev/null || true
-          # Create repo.json manifest for CloudStream
-          cat > repo.json << 'EOF'
+          # Create repo.json manifest
+          cat > $GITHUB_WORKSPACE/builds/repo.json << 'EOF'
           {
               "name": "CS3 Arabic Extensions",
               "description": "Arabic content providers for CloudStream including MyCima and FaselHD",
@@ -70,7 +71,12 @@ jobs:
               ]
           }
           EOF
-          git add -f *.cs3 plugins.json repo.json
-          git commit -m "Build: $(date +'%Y-%m-%d %H:%M:%S')"
-          git push -f origin builds
 
+      - name: Push builds
+        run: |
+          cd $GITHUB_WORKSPACE/builds
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add .
+          git commit -m "Build: $(date +'%Y-%m-%d %H:%M:%S')" || exit 0
+          git push

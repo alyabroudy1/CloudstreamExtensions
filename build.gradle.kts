@@ -12,7 +12,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:8.2.1")
+        classpath("com.android.tools.build:gradle:8.13.0")
         classpath("com.github.recloudstream:gradle:master-SNAPSHOT")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.0")
     }
@@ -36,8 +36,8 @@ subprojects {
     apply(plugin = "com.lagradost.cloudstream3.gradle")
 
     cloudstream {
-        // Set your repository URL here
-        setRepo(System.getenv("GITHUB_REPOSITORY") ?: "https://github.com/USER/CloudstreamExtensions")
+        setRepo(System.getenv("GITHUB_REPOSITORY") ?: "https://github.com/alyabroudy1/cs3")
+        authors = listOf("Phisher98")
     }
 
     android {
@@ -45,8 +45,8 @@ subprojects {
 
         defaultConfig {
             minSdk = 21
-            compileSdkVersion(34)
-            targetSdk = 34
+            compileSdkVersion(35)
+            targetSdk = 35
         }
 
         compileOptions {
@@ -54,10 +54,14 @@ subprojects {
             targetCompatibility = JavaVersion.VERSION_1_8
         }
 
-
         tasks.withType<KotlinJvmCompile> {
             compilerOptions {
                 jvmTarget.set(JvmTarget.JVM_1_8)
+                freeCompilerArgs.addAll(
+                    "-Xno-call-assertions",
+                    "-Xno-param-assertions",
+                    "-Xno-receiver-assertions"
+                )
             }
         }
     }
@@ -65,12 +69,26 @@ subprojects {
     dependencies {
         val implementation by configurations
         val cloudstream by configurations
-        
         cloudstream("com.lagradost:cloudstream3:pre-release")
 
+        // Core dependencies
         implementation(kotlin("stdlib"))
-        implementation("com.github.Blatzar:NiceHttp:0.4.11")
-        implementation("org.jsoup:jsoup:1.17.2")
+        implementation("com.github.Blatzar:NiceHttp:0.4.13")
+        implementation("org.jsoup:jsoup:1.21.2")
+        implementation("androidx.annotation:annotation:1.9.1")
+        
+        // JSON/Serialization
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.20.1")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.20.1")
+        implementation("com.google.code.gson:gson:2.13.2")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+        
+        // Coroutines
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+        
+        // Other utilities
+        implementation("org.mozilla:rhino:1.8.0")
+        implementation("me.xdrop:fuzzywuzzy:1.4.0")
     }
 }
 

@@ -1,0 +1,48 @@
+Including project: FaselHDProvider
+Including project: MyCimaProvider
+> Task :clean
+> Task :FaselHDProvider:clean
+> Task :MyCimaProvider:clean
+> Task :FaselHDProvider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :FaselHDProvider:preBuild UP-TO-DATE
+> Task :FaselHDProvider:preDebugBuild UP-TO-DATE
+> Task :FaselHDProvider:generateDebugResValues
+> Task :FaselHDProvider:generateDebugResources
+> Task :FaselHDProvider:packageDebugResources
+> Task :FaselHDProvider:processDebugNavigationResources
+> Task :MyCimaProvider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :MyCimaProvider:preBuild UP-TO-DATE
+> Task :MyCimaProvider:preDebugBuild UP-TO-DATE
+> Task :MyCimaProvider:generateDebugResValues
+> Task :MyCimaProvider:generateDebugResources
+> Task :MyCimaProvider:packageDebugResources
+> Task :MyCimaProvider:processDebugNavigationResources
+> Task :FaselHDProvider:parseDebugLocalResources
+> Task :MyCimaProvider:parseDebugLocalResources
+> Task :FaselHDProvider:generateDebugRFile
+> Task :MyCimaProvider:generateDebugRFile
+> Task :MyCimaProvider:compileDebugKotlin
+> Task :FaselHDProvider:compileDebugKotlin
+
+> Task :FaselHDProvider:compileDex
+Compiled dex to C:\Users\abu-o\AndroidStudioProjects\CloudstreamExtensions\FaselHDProvider\build\intermediates\classes.dex
+
+> Task :FaselHDProvider:make
+Made Cloudstream package at C:\Users\abu-o\AndroidStudioProjects\CloudstreamExtensions\FaselHDProvider\build\FaselHDProvider.cs3
+
+> Task :MyCimaProvider:compileDex
+Compiled dex to C:\Users\abu-o\AndroidStudioProjects\CloudstreamExtensions\MyCimaProvider\build\intermediates\classes.dex
+
+> Task :MyCimaProvider:make
+Made Cloudstream package at C:\Users\abu-o\AndroidStudioProjects\CloudstreamExtensions\MyCimaProvider\build\MyCimaProvider.cs3
+
+[Incubating] Problems report is available at: file:///C:/Users/abu-o/AndroidStudioProjects/CloudstreamExtensions/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 35s
+21 actionable tasks: 21 executed
